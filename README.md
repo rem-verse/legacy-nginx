@@ -1,6 +1,6 @@
 # Legacy NGINX Builds #
 
-*current NGINX Version: 1.25.4*
+*current NGINX Version: 1.21.6*
 *current OpenSSL Version: 1.0.2u*
 
 While we're working on a longer term safer solution, rem-verse is making
