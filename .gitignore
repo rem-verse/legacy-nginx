@@ -1,0 +1,18 @@
+# Scratch Working Directory for any user to use.
+/scratch/
+
+# Actual Building/Packaging Artifacts
+/build/
+
+/build-scripts/packaging/*.apk
+/build-scripts/packaging/*.deb
+/build-scripts/packaging/*.pkg.tar.zst
+/build-scripts/packaging/*.rpm
+
+/build-scripts/package-self-signatures/deb-key.gpg
+/build-scripts/package-self-signatures/*.apk
+/build-scripts/package-self-signatures/*.deb
+/build-scripts/package-self-signatures/*.rpm
+
+/apt/
+!/apt/conf/distributions

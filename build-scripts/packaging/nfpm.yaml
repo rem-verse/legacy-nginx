@@ -1,0 +1,95 @@
+---
+name: "legacy-nginx"
+description: |
+  Legacy Builds of NGINX that support SSLv3
+homepage: "https://github.com/rem-verse/legacy-nginx"
+license: "MIT"
+maintainer: "Cynthia <cynthia@corp.rem-verse.email>"
+vendor: "RemVerse"
+version: "v1.21.6"
+
+arch: "amd64"
+platform: "linux"
+
+section: "default"
+priority: "optional"
+
+replaces: []
+provides: []
+recommends: []
+suggests: []
+conflicts:
+  - nginx
+
+contents:
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/objs/nginx
+    dst: /usr/local/nginx/sbin/nginx
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/koi-win
+    dst: /usr/local/nginx/conf/koi-win
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/koi-utf
+    dst: /usr/local/nginx/conf/koi-utf
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/win-utf
+    dst: /usr/local/nginx/conf/win-utf
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/mime.types
+    dst: /usr/local/nginx/conf/mime.types
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/mime.types
+    dst: /usr/local/nginx/conf/mime.types.default
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/fastcgi_params
+    dst: /usr/local/nginx/conf/fastcgi_params
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/fastcgi_params
+    dst: /usr/local/nginx/conf/fastcgi_params.default
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/fastcgi.conf
+    dst: /usr/local/nginx/conf/fastcgi.conf
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/fastcgi.conf
+    dst: /usr/local/nginx/conf/fastcgi.conf.default
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/uwsgi_params
+    dst: /usr/local/nginx/conf/uwsgi_params
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/uwsgi_params
+    dst: /usr/local/nginx/conf/uwsgi_params.default
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/scgi_params
+    dst: /usr/local/nginx/conf/scgi_params
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/scgi_params
+    dst: /usr/local/nginx/conf/scgi_params.default
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/nginx.conf
+    dst: /usr/local/nginx/conf/nginx.conf
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/conf/nginx.conf
+    dst: /usr/local/nginx/conf/nginx.conf.default
+  - dst: /usr/local/nginx/logs
+    type: dir
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/html/50x.html
+    dst: /usr/local/nginx/50x.html
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/html/index.html
+    dst: /usr/local/nginx/index.html
+  - dst: /usr/local/nginx/modules
+    type: dir
+  - src: ../../build/nginx/1.21.6/nginx-1.21.6/objs/ngx_stream_module.so
+    dst: /usr/local/nginx/modules/ngx_stream_module.so
+  - src: /usr/local/nginx/sbin/nginx
+    dst: /usr/sbin/nginx
+    type: symlink
+
+overrides:
+  deb:
+    depends:
+      - libcrypt1
+      - libpcre2-dev
+      - zlib1g
+      - libc6
+  rpm:
+    depends:
+      - libxcrypt-compat
+      - pcre2-devel
+      - zlib
+      - glibc
+  apk:
+    depends:
+      - libcrypto1.1
+      - pcre2-dev
+      - zlib
+      - gcompat
+  archlinux:
+    depends:
+      - libxcrypt
+      - pcre2
+      - zlib
+      - glibc
