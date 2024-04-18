@@ -68,6 +68,7 @@ gpg:download "sb.key" "https://nginx.org/keys/sb.key"
 gpg:download "thresh.key" "https://nginx.org/keys/thresh.key"
 # For some older versions we know about.
 gpg:download "mdounin.key" "https://cdn.archive.rem-verse.com/sdk-extras/old-nginx-keys/mdounin.key"
+gpg --recv-keys 43387825DDB1BB97EC36BA5D007C8D7C15D87369
 
 if ! gpg --verify "unsafe-unvalidated-${NGINX_VERSION}.asc" "unsafe-unvalidated-${NGINX_VERSION}"; then
   die "Cannot validate downloaded nginx binary! Not using!"
