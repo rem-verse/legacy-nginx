@@ -43,7 +43,7 @@ echo "[+] Unpacking NGINX..."
 tar xvzf nginx.tar.gz
 cd "nginx-${NGINX_VERSION}"
 echo "[+] Building NGINX..."
-./configure --with-pcre --with-http_ssl_module --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module --with-stream_ssl_preread_module --with-openssl="${LEGACY_NGINX_DIR}/build/openssl/${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}" --with-openssl-opt="enable-ssl2 enable-ssl3 shared zlib"
+./configure --with-pcre --with-http_ssl_module --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-openssl="${LEGACY_NGINX_DIR}/build/openssl/${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}" --with-openssl-opt="enable-ssl2 enable-ssl3 shared zlib"
 if ! hash nproc >/dev/null 2>&1 ; then
   export CORE_COUNT=$(nproc --all)
 else
