@@ -3,7 +3,7 @@
 set -eo pipefail
 
 if [[ "x$NGINX_VERSION" == "x" ]]; then
-  export NGINX_VERSION="1.25.5"
+  export NGINX_VERSION="1.27.0"
 fi
 if [[ "x$OPENSSL_VERSION" == "x" ]]; then
   export OPENSSL_VERSION="1.0.2u"

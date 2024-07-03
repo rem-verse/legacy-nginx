@@ -1,6 +1,6 @@
 # Legacy NGINX Builds #
 
-*current NGINX Version: 1.25.5*
+*current NGINX Version: 1.27.0*
 *current OpenSSL Version: 1.0.2u*
 
 While we're working on a longer term safer solution, rem-verse is making
@@ -34,7 +34,7 @@ sudo apt update
 sudo apt install legacy-nginx
 ```
 
-You can also use our prebuilt docker images: `docker pull remverse/legacy-nginx:1.25.5`
+You can also use our prebuilt docker images: `docker pull remverse/legacy-nginx:1.27.0`
 
 ### Building ###
 
