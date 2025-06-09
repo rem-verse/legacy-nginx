@@ -42,15 +42,9 @@ jobs:
         with:
           name: debian-to-upload-1.27.5-4
           path: build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_amd64.deb
-      - name: Download Backblaze CLI
+      - name: Download Backblaze CLI for ARM64
         run: |
-          curl -sSL -O https://github.com/Backblaze/B2_Command_Line_Tool/releases/download/v4.3.3/b2-linux
-          if [[ "$(b2sum b2-linux)" != "769be4c9ff542594c06588b29db953570c794fdbf1ccc72f9ec31bb8f1ba9e350ca41cc3c02dc35cd3d942510cb6b77f0be12c78b43fe1087384394d382ca7de  b2-linux" ]]; then
-            echo "BAD HASH!!!!"
-            exit 1
-          fi
-          chmod +x b2-linux
-          sudo mv b2-linux /usr/local/bin/b2
+          sudo pip3 install --upgrade --ignore-installed --break-system-packages b2
       - name: Sync Previous APT Repo
         run: b2 sync b2://${B2_BUCKET}/ ./apt/ --exclude-regex "conf/distributions"
         env:
