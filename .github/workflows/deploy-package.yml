@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - uses: secondlife/setup-nfpm@v1
       - name: Place GPG Key
         run: echo -n "$CONTENTS" > build-scripts/package-self-signatures/deb-key.gpg
         env:
@@ -35,6 +36,7 @@ jobs:
     needs: [build-amd64]
     steps:
       - uses: actions/checkout@v4
+      - uses: secondlife/setup-nfpm@v1
       - name: Download x86 Build Artifact
         uses: actions/download-artifact@v4
         with:
