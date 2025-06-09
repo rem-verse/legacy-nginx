@@ -59,6 +59,11 @@ jobs:
         run: ./build-scripts/package-self-signatures/package.sh
         env:
           NFPM_PASSPHRASE: ${{ secrets.NFPM_PASSPHRASE }}
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_REPREPRO_KEY }}
+          passphrase: ${{ secrets.REPREPRO_GPG_PASSPHRASE }}
       - name: Add Packages to APT Repo
         run: |
           sudo apt install -y reprepro
