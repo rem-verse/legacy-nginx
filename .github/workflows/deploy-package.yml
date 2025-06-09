@@ -41,7 +41,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: debian-to-upload-1.27.5-4
-          path: build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_amd64.deb
+          path: build-scripts/package-self-signatures/
       - name: Download Backblaze CLI for ARM64
         run: |
           sudo pip3 install --upgrade --ignore-installed --break-system-packages b2
