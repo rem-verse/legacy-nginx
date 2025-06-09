@@ -1,0 +1,30 @@
+---
+name: Mirror NGINX
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The NGINX Version to mirror'
+        required: true
+        type: string
+
+jobs:
+  mirror-nginx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -sSL -O https://github.com/Backblaze/B2_Command_Line_Tool/releases/download/v4.3.3/b2-linux
+          if [[ "$(b2sum b2-linux)" != "769be4c9ff542594c06588b29db953570c794fdbf1ccc72f9ec31bb8f1ba9e350ca41cc3c02dc35cd3d942510cb6b77f0be12c78b43fe1087384394d382ca7de  b2-linux" ]]; then
+            echo "BAD HASH!!!!"
+            exit 1
+          fi
+          chmod +x b2-linux
+          sudo mv b2-linux /usr/local/bin/
+      - run: ./build-scripts/mirroring/nginx.sh "$NGINX_VERSION"
+        env:
+          NGINX_VERSION: ${{ inputs.version }}
+          B2_BUCKET_NAME: ${{ secrets.MIRROR_BUCKET_NAME }}
+          B2_APPLICATION_KEY_ID: ${{ secrets.MIRROR_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.MIRROR_KEY }}
