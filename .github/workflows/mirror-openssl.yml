@@ -25,7 +25,7 @@ jobs:
             exit 1
           fi
           chmod +x b2-linux
-          sudo mv b2-linux /usr/local/bin/
+          sudo mv b2-linux /usr/local/bin/b2
       - run: ./build-scripts/mirroring/openssl.sh "$OSSL_MAJ_VERSION" "$OSSL_MIN_VERSION"
         env:
           OSSL_MAJ_VERSION: ${{ inputs.major_version }}

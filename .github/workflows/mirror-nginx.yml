@@ -21,7 +21,7 @@ jobs:
             exit 1
           fi
           chmod +x b2-linux
-          sudo mv b2-linux /usr/local/bin/
+          sudo mv b2-linux /usr/local/bin/b2
       - run: ./build-scripts/mirroring/nginx.sh "$NGINX_VERSION"
         env:
           NGINX_VERSION: ${{ inputs.version }}
