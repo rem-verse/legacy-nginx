@@ -1,0 +1,21 @@
+---
+name: Validate Packages Still Build
+
+on:
+  pull_request:
+    branches:
+      - trunk
+
+jobs:
+  check-amd64:
+    name: Check Package Builds on amd64
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./build-scripts/building/nginx.sh
+  check-arm64:
+    name: Check Package builds on arm64
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./build-scripts/building/nginx.sh
