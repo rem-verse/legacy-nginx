@@ -24,8 +24,8 @@ jobs:
       - name: Upload amd64 for later
         uses: actions/upload-artifact@v4
         with:
-          name: debian-to-upload-1.27.5-4
-          path: build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_amd64.deb
+          name: debian-to-upload-1.27.5-5
+          path: build-scripts/package-self-signatures/legacy-nginx_1.27.5~5_amd64.deb
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
@@ -40,7 +40,7 @@ jobs:
       - name: Download x86 Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: debian-to-upload-1.27.5-4
+          name: debian-to-upload-1.27.5-5
           path: build-scripts/package-self-signatures/
       - name: Download Backblaze CLI for ARM64
         run: |
@@ -67,8 +67,8 @@ jobs:
       - name: Add Packages to APT Repo
         run: |
           sudo apt install -y reprepro
-          reprepro -b ./apt/ --architecture amd64 includedeb production ./build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_amd64.deb
-          reprepro -b ./apt/ --architecture arm64 includedeb production ./build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_arm64.deb
+          reprepro -b ./apt/ --architecture amd64 includedeb production ./build-scripts/package-self-signatures/legacy-nginx_1.27.5~5_amd64.deb
+          reprepro -b ./apt/ --architecture arm64 includedeb production ./build-scripts/package-self-signatures/legacy-nginx_1.27.5~5_arm64.deb
       - name: Sync APT Repo
         run: b2 sync ./apt/ b2://${B2_BUCKET}/
         env:
