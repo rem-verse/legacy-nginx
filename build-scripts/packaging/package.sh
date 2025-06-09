@@ -14,7 +14,16 @@ if [ ! -f "${LEGACY_NGINX_DIR}/build/nginx/1.27.5/nginx-1.27.5/objs/nginx" ]; th
   "${LEGACY_NGINX_DIR}"/build-scripts/building/nginx.sh
 fi
 
-nfpm package -p deb
-nfpm package -p rpm
-nfpm package -p apk
-nfpm package -p archlinux
+if [ "$(dpkg --print-architecture)" = "amd64" ]; then
+  echo "Building AMD64 packages..."
+  nfpm package --config nfpm-amd64.yaml -p deb
+  nfpm package --config nfpm-amd64.yaml -p rpm
+  nfpm package --config nfpm-amd64.yaml -p apk
+  nfpm package --config nfpm-amd64.yaml -p archlinux
+else
+  echo "Building ARM64 packages..."
+  nfpm package --config nfpm-arm64.yaml -p deb
+  nfpm package --config nfpm-arm64.yaml -p rpm
+  nfpm package --config nfpm-arm64.yaml -p apk
+  nfpm package --config nfpm-arm64.yaml -p archlinux
+fi

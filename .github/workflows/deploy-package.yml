@@ -1,0 +1,96 @@
+---
+name: Deploy Packages
+
+on:
+  push:
+    branches:
+      - trunk
+
+jobs:
+  build-amd64:
+    name: amd64 Package Build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Place GPG Key
+        run: echo -n "$CONTENTS" > build-scripts/package-self-signatures/deb-key.gpg
+        env:
+          CONTENTS: ${{ secrets.DEB_KEY_CONTENTS }}
+      - name: Package amd64
+        run: ./build-scripts/package-self-signatures/package.sh
+        env:
+          NFPM_PASSPHRASE: ${{ secrets.NFPM_PASSPHRASE }}
+      - name: Upload amd64 for later
+        uses: actions/upload-artifact@v4
+        with:
+          name: debian-to-upload-1.27.5-4
+          path: build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_amd64.deb
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+          overwrite: true
+  build-arm64:
+    name: Check Package builds on arm64
+    runs-on: ubuntu-24.04-arm
+    needs: [build-amd64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download x86 Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: debian-to-upload-1.27.5-4
+          path: build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_amd64.deb
+      - name: Download Backblaze CLI
+        run: |
+          curl -sSL -O https://github.com/Backblaze/B2_Command_Line_Tool/releases/download/v4.3.3/b2-linux
+          if [[ "$(b2sum b2-linux)" != "769be4c9ff542594c06588b29db953570c794fdbf1ccc72f9ec31bb8f1ba9e350ca41cc3c02dc35cd3d942510cb6b77f0be12c78b43fe1087384394d382ca7de  b2-linux" ]]; then
+            echo "BAD HASH!!!!"
+            exit 1
+          fi
+          chmod +x b2-linux
+          sudo mv b2-linux /usr/local/bin/b2
+      - name: Sync Previous APT Repo
+        run: b2 sync b2://${B2_BUCKET}/ ./apt/ --exclude-regex "conf/distributions"
+        env:
+          B2_BUCKET: ${{ secrets.APT_B2_BUCKET }}
+          B2_APPLICATION_KEY_ID: ${{ secrets.APT_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.APT_KEY }}
+      - name: Place down GPG Key
+        run: echo -n "$CONTENTS" > build-scripts/package-self-signatures/deb-key.gpg
+        env:
+          CONTENTS: ${{ secrets.DEB_KEY_CONTENTS }}
+      - name: Package ARM64
+        run: ./build-scripts/package-self-signatures/package.sh
+        env:
+          NFPM_PASSPHRASE: ${{ secrets.NFPM_PASSPHRASE }}
+      - name: Add Packages to APT Repo
+        run: |
+          reprepro -b ./apt/ --architecture amd64 includedeb production ./build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_amd64.deb
+          reprepro -b ./apt/ --architecture arm64 includedeb production ./build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_arm64.deb
+      - name: Sync APT Repo
+        run: b2 sync ./apt/ b2://${B2_BUCKET}/
+        env:
+          B2_BUCKET: ${{ secrets.APT_B2_BUCKET }}
+          B2_APPLICATION_KEY_ID: ${{ secrets.APT_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.APT_KEY }}
+  upload-docker:
+    name: Publish Docker Image
+    needs: [build-amd64, build-arm64]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and Push Legacy-nginx image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: remverse/legacy-nginx:latest,remverse/legacy-nginx:1.27,remverse/legacy-nginx:1.27.5

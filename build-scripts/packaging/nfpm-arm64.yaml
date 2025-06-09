@@ -6,9 +6,9 @@ homepage: "https://github.com/rem-verse/legacy-nginx"
 license: "MIT"
 maintainer: "Cynthia <cynthia@corp.rem-verse.email>"
 vendor: "RemVerse"
-version: "v1.27.5-3"
+version: "v1.27.5-4"
 
-arch: "amd64"
+arch: "arm64"
 platform: "linux"
 
 section: "default"
@@ -35,7 +35,7 @@ contents:
     type: config
   - src: ../../build/nginx/1.27.5/nginx-1.27.5/conf/mime.types
     dst: /usr/local/nginx/conf/mime.types
-    type: config|noreplace
+    type: config
   - src: ../../build/nginx/1.27.5/nginx-1.27.5/conf/mime.types
     dst: /usr/local/nginx/conf/mime.types.default
     type: config
@@ -100,11 +100,17 @@ overrides:
       - pcre-devel
       - zlib
       - glibc
-
-deb:
-  compression: zstd
-  signature:
-    key_file: deb-key.gpg
-rpm:
-  signature:
-    key_file: deb-key.gpg
+  apk:
+    depends:
+      - libcrypto1.1
+      - pcre2-dev
+      - pcre-dev
+      - zlib
+      - gcompat
+  archlinux:
+    depends:
+      - libxcrypt
+      - pcre
+      - pcre2
+      - zlib
+      - glibc

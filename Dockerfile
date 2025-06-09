@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM ubuntu:noble
 LABEL maintainer="Cynthia <cynthia@corp.rem-verse.email>"
 
 RUN apt-get update \
