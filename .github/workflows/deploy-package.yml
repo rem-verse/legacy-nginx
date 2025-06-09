@@ -61,6 +61,7 @@ jobs:
           NFPM_PASSPHRASE: ${{ secrets.NFPM_PASSPHRASE }}
       - name: Add Packages to APT Repo
         run: |
+          sudo apt install -y reprepro
           reprepro -b ./apt/ --architecture amd64 includedeb production ./build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_amd64.deb
           reprepro -b ./apt/ --architecture arm64 includedeb production ./build-scripts/package-self-signatures/legacy-nginx_1.27.5~4_arm64.deb
       - name: Sync APT Repo
