@@ -7,9 +7,9 @@ cd "$SCRIPT_DIR/../../"
 export LEGACY_NGINX_DIR=$(pwd)
 cd "$SCRIPT_DIR"
 
-if [ ! -f "${LEGACY_NGINX_DIR}/build/nginx/1.29.0/nginx-1.29.0/objs/nginx" ]; then
-  echo "[+] Building NGINX 1.29.0 for packaging..."
-  export NGINX_VERSION="1.29.0"
+if [ ! -f "${LEGACY_NGINX_DIR}/build/nginx/1.29.1/nginx-1.29.1/objs/nginx" ]; then
+  echo "[+] Building NGINX 1.29.1 for packaging..."
+  export NGINX_VERSION="1.29.1"
   export OPENSSL_VERSION="1.0.2u"
   "${LEGACY_NGINX_DIR}"/build-scripts/building/nginx.sh
 fi
