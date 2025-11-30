@@ -1,7 +1,0 @@
-Origin: legacy-nginx
-Label: legacy-nginx
-Codename: production
-Architectures: arm64 amd64
-Components: main
-Description: Apt repository for legacy-nginx
-SignWith: CC2BF935321E579A17A76CCFF980E35BF52FBD7B
